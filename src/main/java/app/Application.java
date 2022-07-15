@@ -10,13 +10,14 @@ public class Application {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         EncryptService encryptService = new EncryptService();
-        System.out.println("Добро пожаловать в программу шифрования Цезарь");
-        System.out.println("Введите путь к файлу:");
+        System.out.println("Р”РѕР±СЂРѕ РїРѕР¶Р°Р»РѕРІР°С‚СЊ РІ РїСЂРѕРіСЂР°РјРјСѓ С€РёС„СЂРѕРІР°РЅРёСЏ Р¦РµР·Р°СЂСЊ");
+        System.out.println("Р’РІРµРґРёС‚Рµ РїСѓС‚СЊ Рє С„Р°Р№Р»Сѓ:");
         String inputPath = reader.readLine();
-        System.out.println("Введите путь к зашифрованному файлу:");
+        System.out.println("Р’РІРµРґРёС‚Рµ РїСѓС‚СЊ Рє Р·Р°С€РёС„СЂРѕРІР°РЅРЅРѕРјСѓ С„Р°Р№Р»Сѓ:");
         String outputPath = reader.readLine();
-        System.out.println("Введите ключ для шифрования");
+        System.out.println("Р’РІРµРґРёС‚Рµ РєР»СЋС‡:");
         int key = Integer.parseInt(reader.readLine());
         System.out.println(encryptService.encryptFile(inputPath, outputPath, key));
+
     }
 }

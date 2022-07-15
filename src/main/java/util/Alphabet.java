@@ -54,6 +54,19 @@ public class Alphabet {
         encryptMap.put('!', 40);
         encryptMap.put('«', 41);
         encryptMap.put('»', 42);
+        encryptMap.put('?', 43);
+        encryptMap.put(';', 44);
+        encryptMap.put('-', 45);
+        encryptMap.put('0', 46);
+        encryptMap.put('1', 47);
+        encryptMap.put('2', 48);
+        encryptMap.put('3', 49);
+        encryptMap.put('4', 50);
+        encryptMap.put('5', 51);
+        encryptMap.put('6', 52);
+        encryptMap.put('7', 53);
+        encryptMap.put('8', 54);
+        encryptMap.put('9', 55);
 
         decryptMap.put(0, 'а');
         decryptMap.put(1, 'б');
@@ -98,5 +111,18 @@ public class Alphabet {
         decryptMap.put(40, '!');
         decryptMap.put(41, '«');
         decryptMap.put(42, '»');
+        decryptMap.put(43, '?');
+        decryptMap.put(44, ';');
+        decryptMap.put(45, '-');
+        decryptMap.put(46, '0');
+        decryptMap.put(47, '1');
+        decryptMap.put(48, '2');
+        decryptMap.put(49, '3');
+        decryptMap.put(50, '4');
+        decryptMap.put(51, '5');
+        decryptMap.put(52, '6');
+        decryptMap.put(53, '7');
+        decryptMap.put(54, '8');
+        decryptMap.put(55, '9');
     }
 }
