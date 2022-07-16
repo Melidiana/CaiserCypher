@@ -6,6 +6,12 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class DecryptService {
+
+    private final WriteService writeService;
+
+    public DecryptService(WriteService writeService) {
+        this.writeService = writeService;
+    }
     public StringBuilder decryptFile(String pathIn, String pathOut, int key) {
         File inputFile = new File(pathIn);
         File outputFile = new File(pathOut);
@@ -21,23 +27,12 @@ public class DecryptService {
                 }
                 builder.append('\n');
             }
-            writeToFile(builder, outputFile);
+            writeService.writeToFile(builder, outputFile);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return builder;
-    }
-    private void writeToFile(StringBuilder builder, File outputFile) throws IOException {
-        try (FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
-             OutputStreamWriter outputStream = new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8);
-             BufferedWriter writer = new BufferedWriter(outputStream)) {
-
-            writer.write(builder.toString());
-        }
-        catch (IOException e) {
-            throw new RuntimeException();
-        }
     }
 
     private char decryptChar(char symbol, int key) {

@@ -7,6 +7,12 @@ import java.nio.charset.StandardCharsets;
 
 public class EncryptService {
 
+    private final WriteService writeService;
+
+    public EncryptService(WriteService writeService) {
+        this.writeService = writeService;
+    }
+
     public StringBuilder encryptFile(String pathIn, String pathOut, int key) {
         File inputFile = new File(pathIn);
         File outputFile = new File(pathOut);
@@ -22,26 +28,13 @@ public class EncryptService {
                 }
                 builder.append('\n');
             }
-            writeToFile(builder, outputFile);
+            writeService.writeToFile(builder, outputFile);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return builder;
     }
-
-    private void writeToFile(StringBuilder builder, File outputFile) throws IOException {
-        try (FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
-             OutputStreamWriter outputStream = new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8);
-             BufferedWriter writer = new BufferedWriter(outputStream)) {
-
-            writer.write(builder.toString());
-        }
-        catch (IOException e) {
-            throw new RuntimeException();
-        }
-     }
-
 
     private char encryptChar(char symbol, int key) {
         if (symbol == '\n') {
