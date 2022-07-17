@@ -1,6 +1,7 @@
 package app;
 import service.DecryptService;
 import service.EncryptService;
+import service.ReadService;
 import service.WriteService;
 import util.Alphabet;
 
@@ -11,8 +12,9 @@ import java.io.InputStreamReader;
 public class Application {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        ReadService readService = new ReadService();
         WriteService writeService = new WriteService();
-        EncryptService encryptService = new EncryptService(writeService);
+        EncryptService encryptService = new EncryptService(writeService, readService);
         DecryptService decryptService = new DecryptService(writeService);
         System.out.println("Добро пожаловать в программу шифрования Цезарь." + "\n" + "Вам необходимо выбрать цифру:");
         System.out.println("1 - для шифрования файла, 2 - для расшифрования файла");
@@ -27,7 +29,7 @@ public class Application {
                  key = Integer.parseInt(reader.readLine());
             } while (key > Alphabet.encryptMap.size() || key <= 0);
             if (number == 1) {
-                System.out.println(encryptService.encryptFile(inputPath, outputPath, key));
+                encryptService.encryptFile(inputPath, outputPath, key);
             }
             if (number == 2) {
                 System.out.println(decryptService.decryptFile(inputPath, outputPath, key));
