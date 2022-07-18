@@ -1,15 +1,13 @@
 package app;
 
-import service.DecryptService;
-import service.EncryptService;
-import service.ReadService;
-import service.WriteService;
+import service.*;
 import util.Alphabet;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Paths;
 
 
 public class Application {
@@ -17,45 +15,52 @@ public class Application {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         ReadService readService = new ReadService();
         WriteService writeService = new WriteService();
+        BruteForceService bruteForceService = new BruteForceService(new DecryptService(writeService, readService));
         EncryptService encryptService = new EncryptService(writeService, readService);
         DecryptService decryptService = new DecryptService(writeService, readService);
         System.out.println("Добро пожаловать в программу шифрования Цезарь." + "\n" + "Вам необходимо выбрать цифру:");
-        System.out.println("1 - для шифрования файла, 2 - для расшифрования файла");
+        System.out.println("""
+                1 - для шифрования файла
+                2 - для расшифрования файла с ключом
+                3 - для расшифрования методом brute force""");
         int number = Integer.parseInt(reader.readLine());
         System.out.println("Введите путь к файлу:");
         String inputPath = reader.readLine();
         File inFile = new File(inputPath);
-        String in;
-        do {
-            System.out.println("Введите правильный путь:");
-            in = reader.readLine();
-            File fileIn = new File(in);
-            if (fileIn.exists()) {
-                break;
-            }
-        } while (!inFile.exists());
+        String newPath;
+        File newFile;
+        if (!inFile.exists()) {
+            do {
+                System.out.println("Введите правильный путь:");
+                newPath = reader.readLine();
+                newFile = new File(newPath);
+            } while (!(newFile.exists()));
+            inputPath = newPath;
+        }
         System.out.println("Введите путь для записи файла:");
         String outputPath = reader.readLine();
-        File outFile = new File(outputPath);
-        String out;
-        do {
-            System.out.println("Введите правильный путь:");
-            out = reader.readLine();
-            File fileOut = new File(out);
-            if (fileOut.exists()) {
-                break;
-            }
-        } while (outFile.exists());
+        String newOutPath;
+        if (!Paths.get(outputPath).isAbsolute()) {
+            do {
+                System.out.println("Введите правильный путь:");
+                newOutPath = reader.readLine();
+            } while (!Paths.get(newOutPath).isAbsolute());
+            outputPath = newOutPath;
+        }
+        if (number == 3) {
+            System.out.println("Файл расшифрован с ключом:" + bruteForceService.bruteForceDecrypt(inputPath, outputPath));
+        }
         int key;
         do {
             System.out.println("Введите ключ в диапазоне от 1 до " + Alphabet.encryptMap.size());
             key = Integer.parseInt(reader.readLine());
         } while (key > Alphabet.encryptMap.size() || key <= 0);
+
         if (number == 1) {
-            encryptService.encryptFile(in, out, key);
+            encryptService.encryptFile(inputPath, outputPath, key);
         }
         if (number == 2) {
-            System.out.println(decryptService.decryptFile(in, out, key));
+            decryptService.decryptFile(inputPath, outputPath, key);
         }
     }
 }

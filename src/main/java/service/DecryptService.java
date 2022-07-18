@@ -25,7 +25,7 @@ public class DecryptService {
             returnValue.append(decryptChar(ch, key));
         }
         try {
-            writeService.writeToFile(returnValue, inputFile);
+            writeService.writeToFile(returnValue, outputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -33,6 +33,9 @@ public class DecryptService {
     }
 
     private char decryptChar(char symbol, int key) {
+        if (symbol == '\n') {
+            return '\n';
+        }
         if (Alphabet.encryptMap.get(Character.toLowerCase(symbol)) != null) {
             if (Character.isUpperCase(symbol)) {
                 int position = Alphabet.encryptMap.get(Character.toLowerCase(symbol));
@@ -46,4 +49,5 @@ public class DecryptService {
         throw new RuntimeException("Символ не найден");
     }
 }
+
 
