@@ -67,6 +67,7 @@ public class Alphabet {
         encryptMap.put('7', 53);
         encryptMap.put('8', 54);
         encryptMap.put('9', 55);
+        encryptMap.put('–', 56);
 
         decryptMap.put(0, 'а');
         decryptMap.put(1, 'б');
@@ -124,5 +125,6 @@ public class Alphabet {
         decryptMap.put(53, '7');
         decryptMap.put(54, '8');
         decryptMap.put(55, '9');
+        decryptMap.put(56, '–');
     }
 }

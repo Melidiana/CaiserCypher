@@ -8,34 +8,34 @@ import java.nio.charset.StandardCharsets;
 public class DecryptService {
 
     private final WriteService writeService;
+    private final ReadService readService;
 
-    public DecryptService(WriteService writeService) {
+    public DecryptService(WriteService writeService, ReadService readService) {
         this.writeService = writeService;
+        this.readService = readService;
     }
+
     public StringBuilder decryptFile(String pathIn, String pathOut, int key) {
+        StringBuilder returnValue = new StringBuilder();
         File inputFile = new File(pathIn);
         File outputFile = new File(pathOut);
-        StringBuilder builder = new StringBuilder();
-        try (FileInputStream inputStream = new FileInputStream(inputFile);
-             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-             BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
-            while (bufferedReader.ready()) {
-                String line = bufferedReader.readLine();
-                char[] chars = line.toCharArray();
-                for (char ch : chars) {
-                    builder.append(decryptChar(ch, key));
-                }
-                builder.append('\n');
-            }
-            writeService.writeToFile(builder, outputFile);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        StringBuilder builder = readService.readFile(new StringBuilder(), inputFile);
+        char[] chars = builder.toString().toCharArray();
+        for (char ch : chars) {
+            returnValue.append(decryptChar(ch, key));
         }
-        return builder;
+        try {
+            writeService.writeToFile(returnValue, outputFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return returnValue;
     }
 
     private char decryptChar(char symbol, int key) {
+        if (symbol == '\n') {
+            return '\n';
+        }
         if (Alphabet.encryptMap.get(Character.toLowerCase(symbol)) != null) {
             if (Character.isUpperCase(symbol)) {
                 int position = Alphabet.encryptMap.get(Character.toLowerCase(symbol));
@@ -49,3 +49,5 @@ public class DecryptService {
         throw new RuntimeException("Символ не найден");
     }
 }
+
+
