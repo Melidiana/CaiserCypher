@@ -21,8 +21,8 @@ public class Application {
         DecryptService decryptService = new DecryptService(writeService, readService);
         System.out.println("Введите команду: (пример: ENCRYPT, DECRYPT, BRUTE_FORCE, EXIT)");
         System.out.println("    ENCRYPT (команда для шифрования файла)");
-        System.out.println("    DECRYPT (команда для расшифрования файла)");
-        System.out.println("    BRUTE_FORCE (анализ ключа простым перебором)");
+        System.out.println("    DECRYPT (команда для расшифрования файла с помощью ключа)");
+        System.out.println("    BRUTE_FORCE (команда для расшифрования файла методом brute force)");
         System.out.println("    EXIT (выход из программы)");
         System.out.print("> ");
         Command command = Command.valueOf(reader.readLine());
@@ -48,7 +48,7 @@ public class Application {
                 }
                 int key;
                 do {
-                    System.out.println("Введите ключ в диапазоне от 1 до " + Alphabet.encryptMap.size());
+                    System.out.println("Введите ключ в диапазоне от 1 до " + (Alphabet.encryptMap.size() - 1));
                     key = Integer.parseInt(reader.readLine());
                 } while (key > Alphabet.encryptMap.size() || key <= 0);
 
@@ -83,7 +83,7 @@ public class Application {
                     } while (!Paths.get(outputPath).isAbsolute());
                 }
                 int key = bruteForceService.bruteForceDecrypt(inputPath, outputPath);
-                System.out.println("Ключ для расшифровки равен: " + key);
+                System.out.println("Файл успешно расшифрован с ключом: " + key);
             }
             case EXIT -> System.exit(0);
         }
