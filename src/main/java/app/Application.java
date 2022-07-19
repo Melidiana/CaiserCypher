@@ -49,6 +49,7 @@ public class Application {
         }
         if (number == 3) {
             System.out.println("Файл расшифрован с ключом:" + bruteForceService.bruteForceDecrypt(inputPath, outputPath));
+            System.exit(1);
         }
         int key;
         do {
